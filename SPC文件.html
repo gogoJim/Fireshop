@@ -165,6 +165,29 @@
             transform: translateY(-1px);
         }
         
+        /* 新功能：內嵌播放提示按鈕 */
+        .inline-play-btn {
+            background: #2c5778;
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        
+        .inline-play-btn:hover {
+            background: #1e3f5a;
+            transform: translateY(-1px);
+        }
+        
         /* 內容區 */
         .viewer-container {
             flex: 1;
@@ -198,6 +221,241 @@
         .welcome-icon { font-size: 88px; margin-bottom: 25px; }
         .welcome-title { font-size: 2rem; font-weight: 700; color: #0f2c3b; margin-bottom: 12px; }
         .welcome-subtitle { font-size: 1rem; color: #2c4c6c; max-width: 550px; line-height: 1.6; }
+        
+        /* 影片狀態提示框 */
+        .video-status-info {
+            width: 80%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .status-icon { 
+            font-size: 60px; 
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .status-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e2f3f;
+            margin-bottom: 10px;
+        }
+        
+        .status-desc {
+            font-size: 0.95rem;
+            color: #4a5568;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .status-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .open-video-btn, .inline-video-btn {
+            padding: 10px 24px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .open-video-btn {
+            background: #2c5778;
+            color: white;
+        }
+        
+        .inline-video-btn {
+            background: #f0f2f5;
+            color: #1e2f3f;
+            border: 1px solid #cbd5e0;
+        }
+        
+        .open-video-btn:hover { background: #1e3f5a; }
+        .inline-video-btn:hover { background: #e2e8f0; }
+        
+        /* 新增：影片集樣式 */
+        .video-collection-container {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            background: #0f172a;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .video-collection-header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e2f3f, #2c3e50);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .video-collection-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .video-collection-subtitle {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            opacity: 0.9;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .video-card {
+            background: #1e293b;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #334155;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border-color: #3b82f6;
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #2c3e50, #4a5568);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .video-thumbnail .play-icon {
+            font-size: 3rem;
+            color: white;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-thumbnail:hover .play-icon {
+            opacity: 1;
+        }
+        
+        .video-info {
+            padding: 16px;
+            color: white;
+        }
+        
+        .video-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+        }
+        
+        .video-duration {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            background: rgba(30, 41, 59, 0.7);
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        
+        .video-description {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+        
+        .video-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .video-action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .play-btn {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .play-btn:hover {
+            background: #2563eb;
+        }
+        
+        .download-btn2 {
+            background: #475569;
+            color: white;
+        }
+        
+        .download-btn2:hover {
+            background: #334155;
+        }
+        
+        .new-window-btn {
+            background: transparent;
+            border: 1px solid #64748b;
+            color: #cbd5e1;
+        }
+        
+        .new-window-btn:hover {
+            background: #64748b;
+            color: white;
+        }
+        
+        /* 新增：回到影片集按鈕 */
+        .back-to-collection {
+            background: #2c5778;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 10px;
+        }
+        
+        .back-to-collection:hover {
+            background: #1e3f5a;
+        }
         
         /* loading 與 錯誤遮罩 */
         .loading-overlay {
@@ -287,6 +545,9 @@
             .nav-item { flex: 1 0 auto; min-width: 130px; }
             .main-content { margin-left: 0; height: 55vh; }
             .logo { display: none; }
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         .back-home-btn {
@@ -370,18 +631,24 @@
                 <span class="nav-text">配線方式書</span>
                 <span class="nav-badge">PDF</span>
             </div>
-            <!-- 影片項目：請確認路徑正確，若使用測試影片可用線上範例 -->
-            <div class="nav-item" data-video="accessory_images/安裝注意.mp4" data-type="video" data-videoname="校正影片">
+            <!-- 影片項目 -->
+            <div class="nav-item" data-video="accessory_images/安裝注意.mp4" data-type="video" data-videoname="拆裝影片">
                 <span class="nav-icon">🎥</span>
-                <span class="nav-text">校正影片</span>
+                <span class="nav-text">拆裝影片</span>
                 <span class="nav-badge video-badge">影片</span>
+            </div>
+            <!-- 新增：SPC校正影片集 -->
+            <div class="nav-item" data-section="video-collection" data-collection="spc-correction">
+                <span class="nav-icon">🎬</span>
+                <span class="nav-text">SPC校正影片集</span>
+                <span class="nav-badge video-badge">2段</span>
             </div>
         </div>
         
         <div style="padding: 20px; color: #9bb7d0; font-size: 0.7rem; margin-top: auto; border-top: 1px solid #2c4458; text-align: center;">
-            <p>▶ 點擊左側「校正影片」可播放MP4</p>
-            <p>📄 PDF文件則內嵌瀏覽器檢視</p>
-            <p style="margin-top:6px;">💡 若影片無法內嵌播放，請嘗試「下載影片」後觀看</p>
+            <p>🎬 點擊「SPC校正影片集」瀏覽分段教學</p>
+            <p>📄 PDF文件維持內嵌檢視</p>
+            <p>🎥 單一影片仍在新視窗播放</p>
         </div>
     </div>
     
@@ -394,6 +661,8 @@
             <div id="actionButtonArea">
                 <a id="downloadCurrentBtn" class="download-btn" href="#" download style="display: none;">📥 下載 PDF</a>
                 <button id="videoActionBtn" class="video-action-btn" style="display: none;">🎬 下載影片</button>
+                <button id="inlinePlayBtn" class="inline-play-btn" style="display: none;">📺 內嵌播放</button>
+                <button id="backToCollectionBtn" class="back-to-collection" style="display: none;">← 返回影片集</button>
             </div>
         </div>
         
@@ -403,9 +672,34 @@
                 <h1 class="welcome-title">光電分離型技術中心</h1>
                 <p class="welcome-subtitle">
                     從左側選擇技術文件 (PDF) 或校正教學影片<br>
-                    影片將直接內嵌播放器，PDF 則以文檔檢視器呈現
+                    PDF 將內嵌檢視，SPC校正影片可分段瀏覽
                 </p>
-                <p style="margin-top: 20px; font-size: 0.85rem; background: #eef2ff; padding: 6px 15px; border-radius: 50px;">✨ 點擊「校正影片」立即體驗影片導覽 ✨</p>
+                <p style="margin-top: 20px; font-size: 0.85rem; background: #eef2ff; padding: 6px 15px; border-radius: 50px;">
+                    🎬 點擊「SPC校正影片集」瀏覽分段教學影片
+                </p>
+            </div>
+            
+            <!-- 影片狀態顯示框 -->
+            <div id="videoStatusInfo" class="video-status-info" style="display: none;">
+                <div class="status-icon">🎬</div>
+                <h3 class="status-title">影片已準備就緒</h3>
+                <p class="status-desc">
+                    您選擇的教學影片已準備好播放。<br>
+                    點擊下方按鈕選擇播放方式：
+                </p>
+                <div class="status-actions">
+                    <button id="openVideoWindowBtn" class="open-video-btn">
+                        <span>▶️ 在新視窗播放</span>
+                    </button>
+                    <button id="tryInlinePlayBtn" class="inline-video-btn">
+                        <span>📺 嘗試內嵌播放</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 新增：SPC校正影片集容器 -->
+            <div id="videoCollectionContainer" class="video-collection-container">
+                <!-- 動態生成內容 -->
             </div>
             
             <iframe id="pdfIframe" class="pdf-iframe" title="PDF檢視器" style="display: none;"></iframe>
@@ -435,6 +729,8 @@
             const welcomeScreen = document.getElementById('welcomeScreen');
             const pdfIframe = document.getElementById('pdfIframe');
             const videoContainer = document.getElementById('videoContainer');
+            const videoStatusInfo = document.getElementById('videoStatusInfo');
+            const videoCollectionContainer = document.getElementById('videoCollectionContainer');
             const loadingOverlay = document.getElementById('loadingOverlay');
             const errorMessageDiv = document.getElementById('errorMessage');
             const errorDetailSpan = document.getElementById('errorDetail');
@@ -443,17 +739,271 @@
             const mediaTypeBadge = document.getElementById('mediaTypeBadge');
             const downloadBtn = document.getElementById('downloadCurrentBtn');
             const videoActionBtn = document.getElementById('videoActionBtn');
+            const inlinePlayBtn = document.getElementById('inlinePlayBtn');
+            const backToCollectionBtn = document.getElementById('backToCollectionBtn');
             const retryBtn = document.getElementById('retryBtn');
+            const openVideoWindowBtn = document.getElementById('openVideoWindowBtn');
+            const tryInlinePlayBtn = document.getElementById('tryInlinePlayBtn');
             
             let currentMediaType = null;
             let currentMediaPath = null;
             let currentMediaTitle = "";
             let currentVideoNameForDownload = "";
+            let currentVideoPath = null;
+            let currentVideoTitle = "";
+            let isInCollectionMode = false;
             
+            // SPC校正影片集資料
+            const spcVideos = [
+                { 
+                    id: 1, 
+                    path: 'accessory_images/SPC校正.mp4', 
+                    title: '第1段：校正過程',
+                    duration: '2:16',
+                    description: '前段透過窺視孔對準後、進入自動校正檢查、光軸與光量修正',
+                    thumbnailColor: 'linear-gradient(135deg, #2c3e50, #4a5568)'
+                },
+                { 
+                    id: 2, 
+                    path: 'accessory_images/SPC測試.mp4', 
+                    title: '第2段：校正完成後可測試',
+                    duration: '1:13',
+                    description: '確認是否校正正確完成、測試遮蔽自動回復、測試發報功能',
+                    thumbnailColor: 'linear-gradient(135deg, #3498db, #2c3e50)'
+                }
+            ];
+            
+            // 1. 顯示SPC校正影片集
+            function showSPCVideoCollection() {
+                hideAllMediaDisplays();
+                isInCollectionMode = true;
+                
+                // 建立影片集內容
+                videoCollectionContainer.innerHTML = `
+                    <div class="video-collection-header">
+                        <h2 class="video-collection-title">SPC校正教學影片集</h2>
+                        <p class="video-collection-subtitle">完整校正流程分為2個章節，點擊任一影片開始學習</p>
+                    </div>
+                    <div class="video-grid" id="videoGrid">
+                        ${spcVideos.map(video => `
+                            <div class="video-card" data-video="${video.path}" data-title="${video.title}">
+                                <div class="video-thumbnail" onclick="playVideoInCollection('${video.path}', '${video.title}')" 
+                                     style="background: ${video.thumbnailColor};">
+                                    <div class="play-icon">▶️</div>
+                                    <div style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem;">
+                                        第${video.id}段
+                                    </div>
+                                </div>
+                                <div class="video-info">
+                                    <h4>${video.title}</h4>
+                                    <div class="video-duration">${video.duration}</div>
+                                    <p class="video-description">${video.description}</p>
+                                    <div class="video-actions">
+                                        <button class="video-action-btn play-btn" onclick="playVideoInCollection('${video.path}', '${video.title}')">
+                                            <span>▶️ 播放</span>
+                                        </button>
+                                        <button class="video-action-btn new-window-btn" onclick="openVideoInNewWindow('${video.path}', '${video.title}')">
+                                            <span>🪟 新視窗</span>
+                                        </button>
+                                        <button class="video-action-btn download-btn2" onclick="downloadVideo('${video.path}', '${video.title}')">
+                                            <span>⬇️ 下載</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 0.85rem;">
+                        <p>💡 提示：點擊「播放」在右側內嵌觀看，點擊「新視窗」在新視窗中全螢幕播放</p>
+                    </div>
+                `;
+                
+                videoCollectionContainer.style.display = 'flex';
+                topToolbar.style.display = 'flex';
+                currentDocTitleSpan.innerText = 'SPC校正影片集';
+                mediaTypeBadge.innerText = '🎬 2段影片';
+                mediaTypeBadge.style.background = "#fee2e2";
+                downloadBtn.style.display = 'none';
+                videoActionBtn.style.display = 'none';
+                inlinePlayBtn.style.display = 'none';
+                backToCollectionBtn.style.display = 'none';
+            }
+            
+            // 2. 在影片集中播放影片
+            function playVideoInCollection(videoPath, videoTitle) {
+                currentVideoPath = videoPath;
+                currentVideoTitle = videoTitle;
+                isInCollectionMode = false;
+                
+                // 更新頂部工具列
+                topToolbar.style.display = 'flex';
+                currentDocTitleSpan.innerText = videoTitle;
+                mediaTypeBadge.innerText = '🎬 播放中';
+                mediaTypeBadge.style.background = "#fee2e2";
+                videoActionBtn.style.display = 'inline-flex';
+                videoActionBtn.textContent = '💾 下載影片';
+                backToCollectionBtn.style.display = 'inline-flex';
+                inlinePlayBtn.style.display = 'none';
+                
+                // 設定按鈕功能
+                videoActionBtn.onclick = function() {
+                    downloadVideo(videoPath, videoTitle);
+                };
+                
+                backToCollectionBtn.onclick = function() {
+                    showSPCVideoCollection();
+                };
+                
+                // 隱藏影片集，播放影片
+                videoCollectionContainer.style.display = 'none';
+                loadVideoDirectly(videoPath, videoTitle);
+            }
+            
+            // 3. 下載影片輔助函數
+            function downloadVideo(videoPath, videoTitle) {
+                const a = document.createElement('a');
+                a.href = videoPath;
+                a.download = videoTitle.endsWith('.mp4') ? videoTitle : videoTitle + '.mp4';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+            
+            // 4. 新視窗播放（保持原有功能）
+            function openVideoInNewWindow(videoPath, videoTitle) {
+                if (!videoPath) {
+                    showError('未找到影片路徑');
+                    return;
+                }
+                
+                let videoUrl = videoPath;
+                if (!videoPath.startsWith('http://') && 
+                    !videoPath.startsWith('https://') && 
+                    !videoPath.startsWith('//')) {
+                    
+                    const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+                    videoUrl = basePath + videoPath;
+                }
+                
+                console.log('準備在新視窗開啟影片:', videoUrl);
+                
+                const windowFeatures = 'width=1024,height=768,scrollbars=no,toolbar=no,location=no,status=no';
+                const newWindow = window.open(videoUrl, `video_${Date.now()}`, windowFeatures);
+                
+                if (!newWindow) {
+                    showError('新視窗被瀏覽器阻擋，請允許彈出視窗或點擊下載按鈕');
+                    videoActionBtn.click();
+                }
+            }
+            
+            // 5. 內嵌播放功能
+            function loadVideoDirectly(videoPath, videoTitle) {
+                hideAllMediaDisplays();
+                videoContainer.style.display = 'flex';
+                showLoading();
+                errorMessageDiv.classList.remove('active');
+                
+                const videoElement = document.createElement('video');
+                videoElement.controls = true;
+                videoElement.autoplay = false;
+                videoElement.style.width = '85%';
+                videoElement.style.maxHeight = '90%';
+                videoElement.style.borderRadius = '20px';
+                videoElement.style.boxShadow = '0 20px 35px rgba(0,0,0,0.5)';
+                videoElement.style.backgroundColor = '#000';
+                videoElement.style.objectFit = 'contain';
+                
+                const source = document.createElement('source');
+                source.src = videoPath + (videoPath.includes('?') ? '&' : '?') + 't=' + Date.now();
+                source.type = 'video/mp4';
+                videoElement.appendChild(source);
+                
+                const fallbackMsg = document.createElement('div');
+                fallbackMsg.className = 'fallback-message';
+                fallbackMsg.innerHTML = `
+                    ⚠️ 您的瀏覽器無法直接內嵌播放此影片。<br>
+                    請點擊右上角「下載影片」按鈕，下載後使用本地播放器觀看。<br>
+                    <a href="${videoPath}" target="_blank">🔗 或在新分頁中開啟影片</a>
+                `;
+                
+                videoContainer.innerHTML = '';
+                videoContainer.appendChild(videoElement);
+                videoContainer.appendChild(fallbackMsg);
+                
+                let videoTimeout = setTimeout(() => {
+                    if (videoElement.readyState < 1) {
+                        showError('影片載入時間過長，建議使用新視窗播放或下載後觀看。');
+                    }
+                }, 8000);
+                
+                videoElement.oncanplaythrough = function() {
+                    clearTimeout(videoTimeout);
+                    hideLoading();
+                };
+                
+                videoElement.onloadedmetadata = function() {
+                    clearTimeout(videoTimeout);
+                    hideLoading();
+                };
+                
+                videoElement.onerror = function(e) {
+                    clearTimeout(videoTimeout);
+                    hideLoading();
+                    showError('內嵌播放失敗，請使用新視窗播放或下載功能。');
+                };
+                
+                videoElement.load();
+            }
+            
+            // 6. 影片狀態顯示
+            function showVideoStatus(videoTitle) {
+                hideAllMediaDisplays();
+                videoStatusInfo.style.display = 'block';
+                topToolbar.style.display = 'flex';
+                currentDocTitleSpan.innerText = videoTitle;
+                mediaTypeBadge.innerText = '🎬 教學影片';
+                mediaTypeBadge.style.background = "#fee2e2";
+                downloadBtn.style.display = 'none';
+                videoActionBtn.style.display = 'inline-flex';
+                videoActionBtn.textContent = '💾 下載影片';
+                inlinePlayBtn.style.display = 'inline-flex';
+                backToCollectionBtn.style.display = 'none';
+            }
+            
+            // 7. 嘗試內嵌播放
+            function tryInlinePlay(videoPath, videoTitle) {
+                if (!videoPath) return;
+                
+                currentVideoPath = videoPath;
+                currentVideoTitle = videoTitle;
+                isInCollectionMode = false;
+                
+                videoStatusInfo.style.display = 'none';
+                topToolbar.style.display = 'flex';
+                currentDocTitleSpan.innerText = videoTitle;
+                mediaTypeBadge.innerText = '🎬 教學影片（內嵌）';
+                mediaTypeBadge.style.background = "#fee2e2";
+                downloadBtn.style.display = 'none';
+                videoActionBtn.style.display = 'inline-flex';
+                videoActionBtn.textContent = '💾 下載影片';
+                inlinePlayBtn.style.display = 'none';
+                backToCollectionBtn.style.display = 'none';
+                
+                videoActionBtn.onclick = function() {
+                    downloadVideo(videoPath, videoTitle);
+                };
+                
+                loadVideoDirectly(videoPath, videoTitle);
+            }
+            
+            // 8. 輔助函數
             function hideAllMediaDisplays() {
                 welcomeScreen.style.display = 'none';
                 pdfIframe.style.display = 'none';
                 videoContainer.style.display = 'none';
+                videoStatusInfo.style.display = 'none';
+                videoCollectionContainer.style.display = 'none';
+                
                 if (videoContainer.innerHTML) {
                     const oldVideo = videoContainer.querySelector('video');
                     if (oldVideo) {
@@ -473,6 +1023,7 @@
                 loadingOverlay.style.display = 'none';
                 currentMediaType = null;
                 currentMediaPath = null;
+                isInCollectionMode = false;
             }
             
             function showLoading() {
@@ -493,23 +1044,13 @@
                 welcomeScreen.style.display = 'none';
             }
             
-            retryBtn.addEventListener('click', function() {
-                if (currentMediaType && currentMediaPath) {
-                    if (currentMediaType === 'pdf') {
-                        loadPDF(currentMediaPath, currentMediaTitle);
-                    } else if (currentMediaType === 'video') {
-                        loadVideo(currentMediaPath, currentMediaTitle, currentVideoNameForDownload);
-                    }
-                } else {
-                    showWelcome();
-                }
-            });
-            
+            // 9. 載入PDF
             function loadPDF(pdfPath, title) {
                 if (!pdfPath) return;
                 currentMediaType = 'pdf';
                 currentMediaPath = pdfPath;
                 currentMediaTitle = title;
+                isInCollectionMode = false;
                 
                 topToolbar.style.display = 'flex';
                 currentDocTitleSpan.innerText = title;
@@ -517,6 +1058,8 @@
                 mediaTypeBadge.style.background = "#eef2ff";
                 downloadBtn.style.display = 'inline-flex';
                 videoActionBtn.style.display = 'none';
+                inlinePlayBtn.style.display = 'none';
+                backToCollectionBtn.style.display = 'none';
                 downloadBtn.href = pdfPath;
                 downloadBtn.download = title + '.pdf';
                 
@@ -525,7 +1068,7 @@
                 showLoading();
                 errorMessageDiv.classList.remove('active');
                 
-                const fileUrl = pdfPath + "?t=" + Date.now();
+                const fileUrl = pdfPath + (pdfPath.includes('?') ? '&' : '?') + "t=" + Date.now();
                 pdfIframe.src = fileUrl;
                 
                 let timeoutId = setTimeout(() => {
@@ -538,19 +1081,6 @@
                 pdfIframe.onload = function() {
                     clearTimeout(timeoutId);
                     hideLoading();
-                    setTimeout(() => {
-                        try {
-                            const iframeDoc = pdfIframe.contentDocument || pdfIframe.contentWindow.document;
-                            if (iframeDoc && iframeDoc.body) {
-                                const bodyText = iframeDoc.body.innerText || "";
-                                if (bodyText.includes("404") || bodyText.includes("找不到") || bodyText.includes("Not Found")) {
-                                    showError('PDF 檔案不存在，請確認路徑: ' + pdfPath);
-                                }
-                            }
-                        } catch (e) {
-                            console.log("PDF loaded");
-                        }
-                    }, 300);
                 };
                 
                 pdfIframe.onerror = function() {
@@ -560,111 +1090,7 @@
                 };
             }
             
-            // 改進後的影片載入函式：更穩健的錯誤處理與回退提示
-            function loadVideo(videoPath, title, rawNameForDownload) {
-                if (!videoPath) return;
-                currentMediaType = 'video';
-                currentMediaPath = videoPath;
-                currentMediaTitle = title;
-                currentVideoNameForDownload = rawNameForDownload || title;
-                
-                topToolbar.style.display = 'flex';
-                currentDocTitleSpan.innerText = title;
-                mediaTypeBadge.innerText = '🎬 教學影片';
-                mediaTypeBadge.style.background = "#fee2e2";
-                downloadBtn.style.display = 'none';
-                videoActionBtn.style.display = 'inline-flex';
-                
-                videoActionBtn.onclick = function() {
-                    const a = document.createElement('a');
-                    a.href = videoPath;
-                    a.download = (currentVideoNameForDownload.endsWith('.mp4') ? currentVideoNameForDownload : currentVideoNameForDownload + '.mp4');
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                };
-                
-                hideAllMediaDisplays();
-                videoContainer.style.display = 'flex';
-                showLoading();
-                errorMessageDiv.classList.remove('active');
-                
-                // 建立 video 元素
-                const videoElement = document.createElement('video');
-                videoElement.controls = true;
-                videoElement.autoplay = false;
-                videoElement.style.width = '85%';
-                videoElement.style.maxHeight = '90%';
-                videoElement.style.borderRadius = '20px';
-                videoElement.style.boxShadow = '0 20px 35px rgba(0,0,0,0.5)';
-                videoElement.style.backgroundColor = '#000';
-                videoElement.style.objectFit = 'contain';
-                
-                // 嘗試多種格式支援
-                const source = document.createElement('source');
-                // 避免快取
-                const uniqueUrl = videoPath + "?t=" + Date.now();
-                source.src = uniqueUrl;
-                source.type = 'video/mp4';
-                videoElement.appendChild(source);
-                
-                // 備用：如果 mp4 無法播放，提供額外資訊
-                videoElement.innerHTML = `
-                    <div class="fallback-message">
-                        ⚠️ 您的瀏覽器無法直接內嵌播放此影片。<br>
-                        請點擊右上角「下載影片」按鈕，下載後使用本地播放器觀看。<br>
-                        <a href="${videoPath}" target="_blank">🔗 或在新分頁中開啟影片</a>
-                    </div>
-                `;
-                
-                videoContainer.appendChild(videoElement);
-                
-                let videoTimeout = setTimeout(() => {
-                    if (loadingOverlay.style.display === 'flex') {
-                        hideLoading();
-                        // 不直接顯示錯誤，因為可能只是加載慢，但若逾時則顯示友善提示
-                        if (videoElement.readyState === 0) {
-                            showError('影片無法載入，可能是檔案路徑錯誤、格式不支援或網路問題。建議使用「下載影片」功能。');
-                        } else {
-                            hideLoading();
-                        }
-                    }
-                }, 10000);
-                
-                // 監聽可以播放事件
-                videoElement.oncanplaythrough = function() {
-                    clearTimeout(videoTimeout);
-                    hideLoading();
-                };
-                
-                videoElement.onloadedmetadata = function() {
-                    clearTimeout(videoTimeout);
-                    hideLoading();
-                };
-                
-                videoElement.onerror = function(e) {
-                    clearTimeout(videoTimeout);
-                    hideLoading();
-                    let errMsg = '影片無法內嵌播放。';
-                    if (videoElement.error) {
-                        switch(videoElement.error.code) {
-                            case 4: errMsg = '影片檔案格式不支援或路徑錯誤。建議下載後觀看。'; break;
-                            case 1: errMsg = '影片載入被中止。'; break;
-                            default: errMsg = '無法讀取影片，請嘗試下載後播放。檔案路徑: ' + videoPath;
-                        }
-                    }
-                    // 顯示錯誤但不讓整個畫面卡死，提供用戶明確解決方案
-                    showError(errMsg + ' 您仍可點擊右上角「下載影片」按鈕取得檔案。');
-                };
-                
-                videoElement.load();
-                // 若已經緩衝足夠則隱藏loading
-                if (videoElement.readyState >= 2) {
-                    clearTimeout(videoTimeout);
-                    hideLoading();
-                }
-            }
-            
+            // 10. 導航點擊處理
             function handleNavClick(item) {
                 navItems.forEach(nav => nav.classList.remove('active'));
                 item.classList.add('active');
@@ -675,29 +1101,89 @@
                     return;
                 }
                 
+                if (section === 'video-collection') {
+                    showSPCVideoCollection();
+                    return;
+                }
+                
                 const videoPath = item.getAttribute('data-video');
                 const pdfPath = item.getAttribute('data-pdf');
                 
                 if (videoPath) {
-                    let videoTitle = item.getAttribute('data-videoname') || item.querySelector('.nav-text')?.innerText || '教學影片';
-                    if (!item.getAttribute('data-videoname')) {
-                        videoTitle = item.querySelector('.nav-text')?.innerText || '校正影片';
-                    }
+                    const videoTitle = item.querySelector('.nav-text')?.innerText || '校正影片';
                     const downloadName = videoTitle + '.mp4';
-                    loadVideo(videoPath, videoTitle, downloadName);
+                    
+                    currentMediaType = 'video';
+                    currentMediaPath = videoPath;
+                    currentMediaTitle = videoTitle;
+                    currentVideoNameForDownload = downloadName;
+                    currentVideoPath = videoPath;
+                    currentVideoTitle = videoTitle;
+                    isInCollectionMode = false;
+                    
+                    showVideoStatus(videoTitle);
+                    
+                    videoActionBtn.onclick = function() {
+                        downloadVideo(videoPath, videoTitle);
+                    };
+                    
                     return;
                 }
                 
                 if (pdfPath) {
-                    let pdfTitle = item.querySelector('.nav-text')?.innerText || '技術文件';
+                    const pdfTitle = item.querySelector('.nav-text')?.innerText || '技術文件';
                     loadPDF(pdfPath, pdfTitle);
                     return;
                 }
                 
                 showWelcome();
-                showError('無效的內容連結，請聯絡管理員');
             }
             
+            // 11. 事件監聽器
+            retryBtn.addEventListener('click', function() {
+                if (currentMediaType && currentMediaPath) {
+                    if (currentMediaType === 'pdf') {
+                        loadPDF(currentMediaPath, currentMediaTitle);
+                    } else if (currentMediaType === 'video') {
+                        if (currentVideoPath) {
+                            tryInlinePlay(currentVideoPath, currentVideoTitle);
+                        } else {
+                            showVideoStatus(currentMediaTitle);
+                        }
+                    }
+                } else {
+                    showWelcome();
+                }
+            });
+            
+            openVideoWindowBtn.addEventListener('click', function() {
+                if (currentVideoPath) {
+                    openVideoInNewWindow(currentVideoPath, currentVideoTitle);
+                } else if (currentMediaPath) {
+                    openVideoInNewWindow(currentMediaPath, currentMediaTitle);
+                }
+            });
+            
+            tryInlinePlayBtn.addEventListener('click', function() {
+                if (currentVideoPath) {
+                    tryInlinePlay(currentVideoPath, currentVideoTitle);
+                } else if (currentMediaPath) {
+                    tryInlinePlay(currentMediaPath, currentMediaTitle);
+                }
+            });
+            
+            inlinePlayBtn.addEventListener('click', function() {
+                if (currentVideoPath) {
+                    tryInlinePlay(currentVideoPath, currentVideoTitle);
+                }
+            });
+            
+            // 12. 全域函數暴露
+            window.playVideoInCollection = playVideoInCollection;
+            window.openVideoInNewWindow = openVideoInNewWindow;
+            window.downloadVideo = downloadVideo;
+            
+            // 13. 初始化
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -706,7 +1192,8 @@
             });
             
             showWelcome();
-            console.log("導覽系統已啟動：支援影片與PDF切換，影片無法播放時提供下載替代方案");
+            console.log("光電分離型資料導覽系統已啟動");
+            console.log("SPC校正影片已分割為2段，提供影片集瀏覽功能");
         })();
     </script>
 </body>
