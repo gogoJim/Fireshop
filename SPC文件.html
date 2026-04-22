@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>光電分離型資料導覽 | 文件與影片中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft JhengHei', 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            background-color: #f0f2f5;
+            color: #1e2a3a;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* ========= 左側導航欄 ========= */
+        .sidebar {
+            width: 290px;
+            background: linear-gradient(180deg, #1e2f3f 0%, #15232e 100%);
+            color: #eef2f5;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-track { background: #1e2f3f; }
+        .sidebar::-webkit-scrollbar-thumb { background: #4a6f8f; border-radius: 5px; }
+        
+        .logo {
+            text-align: center;
+            padding: 24px 20px;
+            border-bottom: 1px solid #2c4458;
+            margin-bottom: 20px;
+        }
+        
+        .logo h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff, #9bc0e0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo p {
+            font-size: 0.7rem;
+            color: #9aaebf;
+            margin-top: 8px;
+        }
+        
+        .nav-menu {
+            flex-grow: 1;
+            padding: 0 12px;
+        }
+        
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255,255,255,0.02);
+        }
+        
+        .nav-item:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateX(3px);
+        }
+        
+        .nav-item.active {
+            background: #2c5778;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-left: 3px solid #5dade2;
+        }
+        
+        .nav-icon { font-size: 1.4rem; width: 32px; text-align: center; }
+        .nav-text { flex: 1; font-size: 0.92rem; font-weight: 500; }
+        .nav-badge {
+            font-size: 0.65rem;
+            background: #e67e22;
+            padding: 3px 8px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+        .video-badge { background: #e63946; }
+        
+        /* 右側主區塊 */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 290px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f8fafc;
+        }
+        
+        /* 頂部工具欄 */
+        .top-toolbar {
+            background: white;
+            padding: 12px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        
+        .current-doc-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .doc-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        
+        .media-badge {
+            background: #eef2ff;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1e40af;
+        }
+        
+        .download-btn, .video-action-btn {
+            background: #1e2f3f;
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .download-btn:hover, .video-action-btn:hover {
+            background: #0f2b3b;
+            transform: translateY(-1px);
+        }
+        
+        /* 內容區 */
+        .viewer-container {
+            flex: 1;
+            position: relative;
+            background: #1a1e24;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .pdf-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: #525659;
+        }
+        
+        /* 歡迎畫面 */
+        .welcome-screen {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: linear-gradient(145deg, #f1f5f9 0%, #e4e9f2 100%);
+            text-align: center;
+        }
+        
+        .welcome-icon { font-size: 88px; margin-bottom: 25px; }
+        .welcome-title { font-size: 2rem; font-weight: 700; color: #0f2c3b; margin-bottom: 12px; }
+        .welcome-subtitle { font-size: 1rem; color: #2c4c6c; max-width: 550px; line-height: 1.6; }
+        
+        /* loading 與 錯誤遮罩 */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 110;
+        }
+        
+        .spinner {
+            width: 52px;
+            height: 52px;
+            border: 5px solid rgba(255,255,255,0.2);
+            border-top: 5px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            margin-bottom: 16px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text { color: #f1f5f9; font-weight: 500; }
+        
+        .error-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fef2f2;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 120;
+        }
+        
+        .error-message.active { display: flex; }
+        
+        .error-box {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.15);
+        }
+        
+        .retry-btn {
+            margin-top: 24px;
+            padding: 10px 28px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        /* 響應式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                max-height: 45vh;
+                flex-direction: row;
+                flex-wrap: wrap;
+                overflow-x: auto;
+            }
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                padding: 12px;
+            }
+            .nav-item { flex: 1 0 auto; min-width: 130px; }
+            .main-content { margin-left: 0; height: 55vh; }
+            .logo { display: none; }
+        }
+        
+        .back-home-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 2000;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+        .back-home-btn:hover { background: #1e4663; transform: scale(1.02); }
+        
+        /* 影片容器樣式強化 */
+        .video-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0b1120;
+            padding: 20px;
+        }
+        
+        .video-player {
+            max-width: 90%;
+            max-height: 90%;
+            width: auto;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+            background: #000;
+        }
+        
+        .fallback-message {
+            text-align: center;
+            color: #ccc;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 80%;
+        }
+        
+        .fallback-message a {
+            color: #60a5fa;
+            margin-top: 15px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h2>⚡ 光電分離型資料庫</h2>
+            <p>技術文件 · 影音教學</p>
+        </div>
+
+        <div class="nav-menu">
+            <div class="nav-item active" data-section="welcome">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">首頁</span>
+            </div>
+            <!-- PDF 文件項目 -->
+            <div class="nav-item" data-pdf="accessory_images/SPC-24說明書.pdf" data-type="pdf">
+                <span class="nav-icon">📘</span>
+                <span class="nav-text">SPC-24說明書</span>
+                <span class="nav-badge">PDF</span>
+            </div>
+            <div class="nav-item" data-pdf="accessory_images/SPC施工篇.pdf" data-type="pdf">
+                <span class="nav-icon">🛠️</span>
+                <span class="nav-text">配線方式書</span>
+                <span class="nav-badge">PDF</span>
+            </div>
+            <!-- 影片項目：請確認路徑正確，若使用測試影片可用線上範例 -->
+            <div class="nav-item" data-video="accessory_images/安裝注意.mp4" data-type="video" data-videoname="校正影片">
+                <span class="nav-icon">🎥</span>
+                <span class="nav-text">校正影片</span>
+                <span class="nav-badge video-badge">影片</span>
+            </div>
+        </div>
+        
+        <div style="padding: 20px; color: #9bb7d0; font-size: 0.7rem; margin-top: auto; border-top: 1px solid #2c4458; text-align: center;">
+            <p>▶ 點擊左側「校正影片」可播放MP4</p>
+            <p>📄 PDF文件則內嵌瀏覽器檢視</p>
+            <p style="margin-top:6px;">💡 若影片無法內嵌播放，請嘗試「下載影片」後觀看</p>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-toolbar" id="topToolbar" style="display: none;">
+            <div class="current-doc-info">
+                <span class="doc-title" id="currentDocTitle">文件標題</span>
+                <span class="media-badge" id="mediaTypeBadge">PDF 文件</span>
+            </div>
+            <div id="actionButtonArea">
+                <a id="downloadCurrentBtn" class="download-btn" href="#" download style="display: none;">📥 下載 PDF</a>
+                <button id="videoActionBtn" class="video-action-btn" style="display: none;">🎬 下載影片</button>
+            </div>
+        </div>
+        
+        <div class="viewer-container" id="viewerContainer">
+            <div class="welcome-screen" id="welcomeScreen">
+                <div class="welcome-icon">📡🎞️</div>
+                <h1 class="welcome-title">光電分離型技術中心</h1>
+                <p class="welcome-subtitle">
+                    從左側選擇技術文件 (PDF) 或校正教學影片<br>
+                    影片將直接內嵌播放器，PDF 則以文檔檢視器呈現
+                </p>
+                <p style="margin-top: 20px; font-size: 0.85rem; background: #eef2ff; padding: 6px 15px; border-radius: 50px;">✨ 點擊「校正影片」立即體驗影片導覽 ✨</p>
+            </div>
+            
+            <iframe id="pdfIframe" class="pdf-iframe" title="PDF檢視器" style="display: none;"></iframe>
+            <div id="videoContainer" style="display: none; width: 100%; height: 100%; justify-content: center; align-items: center; background: #0b1120;"></div>
+            
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="spinner"></div>
+                <div class="loading-text">正在載入內容中...</div>
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                <div class="error-box">
+                    <div class="error-icon">⚠️</div>
+                    <h3>載入失敗</h3>
+                    <p id="errorDetail">檔案不存在或路徑錯誤</p>
+                    <button class="retry-btn" id="retryBtn">重新嘗試</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="back-home-btn" onclick="window.location.href='index.html'">🏠 返回主選單</button>
+
+    <script>
+        (function(){
+            const navItems = document.querySelectorAll('.nav-item');
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const pdfIframe = document.getElementById('pdfIframe');
+            const videoContainer = document.getElementById('videoContainer');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const errorMessageDiv = document.getElementById('errorMessage');
+            const errorDetailSpan = document.getElementById('errorDetail');
+            const topToolbar = document.getElementById('topToolbar');
+            const currentDocTitleSpan = document.getElementById('currentDocTitle');
+            const mediaTypeBadge = document.getElementById('mediaTypeBadge');
+            const downloadBtn = document.getElementById('downloadCurrentBtn');
+            const videoActionBtn = document.getElementById('videoActionBtn');
+            const retryBtn = document.getElementById('retryBtn');
+            
+            let currentMediaType = null;
+            let currentMediaPath = null;
+            let currentMediaTitle = "";
+            let currentVideoNameForDownload = "";
+            
+            function hideAllMediaDisplays() {
+                welcomeScreen.style.display = 'none';
+                pdfIframe.style.display = 'none';
+                videoContainer.style.display = 'none';
+                if (videoContainer.innerHTML) {
+                    const oldVideo = videoContainer.querySelector('video');
+                    if (oldVideo) {
+                        oldVideo.pause();
+                        oldVideo.src = '';
+                        oldVideo.load();
+                    }
+                    videoContainer.innerHTML = '';
+                }
+            }
+            
+            function showWelcome() {
+                hideAllMediaDisplays();
+                welcomeScreen.style.display = 'flex';
+                topToolbar.style.display = 'none';
+                errorMessageDiv.classList.remove('active');
+                loadingOverlay.style.display = 'none';
+                currentMediaType = null;
+                currentMediaPath = null;
+            }
+            
+            function showLoading() {
+                loadingOverlay.style.display = 'flex';
+                errorMessageDiv.classList.remove('active');
+            }
+            
+            function hideLoading() {
+                loadingOverlay.style.display = 'none';
+            }
+            
+            function showError(message) {
+                hideLoading();
+                errorDetailSpan.innerText = message;
+                errorMessageDiv.classList.add('active');
+                topToolbar.style.display = 'none';
+                hideAllMediaDisplays();
+                welcomeScreen.style.display = 'none';
+            }
+            
+            retryBtn.addEventListener('click', function() {
+                if (currentMediaType && currentMediaPath) {
+                    if (currentMediaType === 'pdf') {
+                        loadPDF(currentMediaPath, currentMediaTitle);
+                    } else if (currentMediaType === 'video') {
+                        loadVideo(currentMediaPath, currentMediaTitle, currentVideoNameForDownload);
+                    }
+                } else {
+                    showWelcome();
+                }
+            });
+            
+            function loadPDF(pdfPath, title) {
+                if (!pdfPath) return;
+                currentMediaType = 'pdf';
+                currentMediaPath = pdfPath;
+                currentMediaTitle = title;
+                
+                topToolbar.style.display = 'flex';
+                currentDocTitleSpan.innerText = title;
+                mediaTypeBadge.innerText = '📄 PDF 文件';
+                mediaTypeBadge.style.background = "#eef2ff";
+                downloadBtn.style.display = 'inline-flex';
+                videoActionBtn.style.display = 'none';
+                downloadBtn.href = pdfPath;
+                downloadBtn.download = title + '.pdf';
+                
+                hideAllMediaDisplays();
+                pdfIframe.style.display = 'block';
+                showLoading();
+                errorMessageDiv.classList.remove('active');
+                
+                const fileUrl = pdfPath + "?t=" + Date.now();
+                pdfIframe.src = fileUrl;
+                
+                let timeoutId = setTimeout(() => {
+                    if (loadingOverlay.style.display === 'flex') {
+                        hideLoading();
+                        showError('載入逾時，請確認檔案路徑正確或網路狀況。');
+                    }
+                }, 12000);
+                
+                pdfIframe.onload = function() {
+                    clearTimeout(timeoutId);
+                    hideLoading();
+                    setTimeout(() => {
+                        try {
+                            const iframeDoc = pdfIframe.contentDocument || pdfIframe.contentWindow.document;
+                            if (iframeDoc && iframeDoc.body) {
+                                const bodyText = iframeDoc.body.innerText || "";
+                                if (bodyText.includes("404") || bodyText.includes("找不到") || bodyText.includes("Not Found")) {
+                                    showError('PDF 檔案不存在，請確認路徑: ' + pdfPath);
+                                }
+                            }
+                        } catch (e) {
+                            console.log("PDF loaded");
+                        }
+                    }, 300);
+                };
+                
+                pdfIframe.onerror = function() {
+                    clearTimeout(timeoutId);
+                    hideLoading();
+                    showError('無法載入 PDF，請確認檔案是否存在或權限。');
+                };
+            }
+            
+            // 改進後的影片載入函式：更穩健的錯誤處理與回退提示
+            function loadVideo(videoPath, title, rawNameForDownload) {
+                if (!videoPath) return;
+                currentMediaType = 'video';
+                currentMediaPath = videoPath;
+                currentMediaTitle = title;
+                currentVideoNameForDownload = rawNameForDownload || title;
+                
+                topToolbar.style.display = 'flex';
+                currentDocTitleSpan.innerText = title;
+                mediaTypeBadge.innerText = '🎬 教學影片';
+                mediaTypeBadge.style.background = "#fee2e2";
+                downloadBtn.style.display = 'none';
+                videoActionBtn.style.display = 'inline-flex';
+                
+                videoActionBtn.onclick = function() {
+                    const a = document.createElement('a');
+                    a.href = videoPath;
+                    a.download = (currentVideoNameForDownload.endsWith('.mp4') ? currentVideoNameForDownload : currentVideoNameForDownload + '.mp4');
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+                
+                hideAllMediaDisplays();
+                videoContainer.style.display = 'flex';
+                showLoading();
+                errorMessageDiv.classList.remove('active');
+                
+                // 建立 video 元素
+                const videoElement = document.createElement('video');
+                videoElement.controls = true;
+                videoElement.autoplay = false;
+                videoElement.style.width = '85%';
+                videoElement.style.maxHeight = '90%';
+                videoElement.style.borderRadius = '20px';
+                videoElement.style.boxShadow = '0 20px 35px rgba(0,0,0,0.5)';
+                videoElement.style.backgroundColor = '#000';
+                videoElement.style.objectFit = 'contain';
+                
+                // 嘗試多種格式支援
+                const source = document.createElement('source');
+                // 避免快取
+                const uniqueUrl = videoPath + "?t=" + Date.now();
+                source.src = uniqueUrl;
+                source.type = 'video/mp4';
+                videoElement.appendChild(source);
+                
+                // 備用：如果 mp4 無法播放，提供額外資訊
+                videoElement.innerHTML = `
+                    <div class="fallback-message">
+                        ⚠️ 您的瀏覽器無法直接內嵌播放此影片。<br>
+                        請點擊右上角「下載影片」按鈕，下載後使用本地播放器觀看。<br>
+                        <a href="${videoPath}" target="_blank">🔗 或在新分頁中開啟影片</a>
+                    </div>
+                `;
+                
+                videoContainer.appendChild(videoElement);
+                
+                let videoTimeout = setTimeout(() => {
+                    if (loadingOverlay.style.display === 'flex') {
+                        hideLoading();
+                        // 不直接顯示錯誤，因為可能只是加載慢，但若逾時則顯示友善提示
+                        if (videoElement.readyState === 0) {
+                            showError('影片無法載入，可能是檔案路徑錯誤、格式不支援或網路問題。建議使用「下載影片」功能。');
+                        } else {
+                            hideLoading();
+                        }
+                    }
+                }, 10000);
+                
+                // 監聽可以播放事件
+                videoElement.oncanplaythrough = function() {
+                    clearTimeout(videoTimeout);
+                    hideLoading();
+                };
+                
+                videoElement.onloadedmetadata = function() {
+                    clearTimeout(videoTimeout);
+                    hideLoading();
+                };
+                
+                videoElement.onerror = function(e) {
+                    clearTimeout(videoTimeout);
+                    hideLoading();
+                    let errMsg = '影片無法內嵌播放。';
+                    if (videoElement.error) {
+                        switch(videoElement.error.code) {
+                            case 4: errMsg = '影片檔案格式不支援或路徑錯誤。建議下載後觀看。'; break;
+                            case 1: errMsg = '影片載入被中止。'; break;
+                            default: errMsg = '無法讀取影片，請嘗試下載後播放。檔案路徑: ' + videoPath;
+                        }
+                    }
+                    // 顯示錯誤但不讓整個畫面卡死，提供用戶明確解決方案
+                    showError(errMsg + ' 您仍可點擊右上角「下載影片」按鈕取得檔案。');
+                };
+                
+                videoElement.load();
+                // 若已經緩衝足夠則隱藏loading
+                if (videoElement.readyState >= 2) {
+                    clearTimeout(videoTimeout);
+                    hideLoading();
+                }
+            }
+            
+            function handleNavClick(item) {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                const section = item.getAttribute('data-section');
+                if (section === 'welcome') {
+                    showWelcome();
+                    return;
+                }
+                
+                const videoPath = item.getAttribute('data-video');
+                const pdfPath = item.getAttribute('data-pdf');
+                
+                if (videoPath) {
+                    let videoTitle = item.getAttribute('data-videoname') || item.querySelector('.nav-text')?.innerText || '教學影片';
+                    if (!item.getAttribute('data-videoname')) {
+                        videoTitle = item.querySelector('.nav-text')?.innerText || '校正影片';
+                    }
+                    const downloadName = videoTitle + '.mp4';
+                    loadVideo(videoPath, videoTitle, downloadName);
+                    return;
+                }
+                
+                if (pdfPath) {
+                    let pdfTitle = item.querySelector('.nav-text')?.innerText || '技術文件';
+                    loadPDF(pdfPath, pdfTitle);
+                    return;
+                }
+                
+                showWelcome();
+                showError('無效的內容連結，請聯絡管理員');
+            }
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleNavClick(item);
+                });
+            });
+            
+            showWelcome();
+            console.log("導覽系統已啟動：支援影片與PDF切換，影片無法播放時提供下載替代方案");
+        })();
+    </script>
+</body>
+</html>
