@@ -579,43 +579,7 @@
         }
 		
 		/* 案件名稱區域 - 醒目提示 */
-        .project-name-area {
-            background: #fff3e0;
-            padding: 16px 20px;
-            border-bottom: 2px solid #ffb347;
-            border-left: 5px solid #ffb347;
-            margin-bottom: 8px;
-        }
 
-        .project-name-area label {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #c44536;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .project-name-area label:before {
-            content: "⚠️ ";
-            font-size: 1.1rem;
-        }
-
-        .project-name-input {
-            font-size: 1.25rem;
-            padding: 12px 16px;
-            width: 100%;
-            border: 2px solid #ffb347;
-            border-radius: 10px;
-            background: #ffffff;
-            font-weight: 500;
-            box-sizing: border-box;
-        }
-
-        .project-name-input:focus {
-            outline: none;
-            border-color: #c44536;
-            box-shadow: 0 0 0 3px rgba(196, 69, 54, 0.2);
-        }
 		
         .cart-items-list {
             flex: 1;
@@ -769,6 +733,59 @@
     background: #ff9f1a;
     transform: translateY(-2px);
 }	
+
+/* 美化後的橢圓形案件名稱輸入框 - 強化版 */
+.project-name-input {
+    font-size: 1.25rem;
+    padding: 14px 28px !important;
+    width: 100%;
+    border: 2px solid #ffb347 !important;
+    border-radius: 60px !important;
+    background: #ffffff !important;
+    font-weight: 600;
+    box-sizing: border-box;
+    transition: all 0.25s ease-in-out;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    font-family: inherit;
+}
+
+.project-name-input:focus {
+    outline: none;
+    border-color: #c44536 !important;
+    background-color: #fffef7 !important;
+    box-shadow: 0 0 0 4px rgba(196, 69, 54, 0.2), 0 3px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.01);
+}
+
+.project-name-input::placeholder {
+    color: #b0c4de;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+/* 強制覆蓋案件名稱輸入框樣式 - 放最底部確保優先權 */
+.cart-drawer .project-name-area .project-name-input,
+div.cart-drawer div.project-name-area input#projectNameInput {
+    font-size: 1.25rem !important;
+    padding: 14px 28px !important;
+    width: 100% !important;
+    border: 2px solid #ffb347 !important;
+    border-radius: 60px !important;
+    background: #ffffff !important;
+    font-weight: 600 !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.25s ease-in-out !important;
+}
+
+.cart-drawer .project-name-area .project-name-input:focus {
+    border-color: #c44536 !important;
+    background-color: #fffef7 !important;
+    box-shadow: 0 0 0 4px rgba(196, 69, 54, 0.2), 0 3px 8px rgba(0, 0, 0, 0.1) !important;
+    transform: scale(1.01) !important;
+}
 
     </style>
 	    <!-- ========== 防護區塊：禁止右鍵 + 禁止 F12 開發者工具 ========== -->
